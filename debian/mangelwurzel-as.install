@@ -1,0 +1,2 @@
+build/bin/mangelwurzel-as.so usr/share/clearwater/sprout/plugins
+mangelwurzel-as.root/* /
