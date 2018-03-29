@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# @file mangelwurzel-as.plugin_conf
+#
+# Copyright (C) 2018  Metaswitch Networks Ltd
+#
+# This script generates the mangelwurzel-specific command-line arguments that must
+# be passed to sprout.  This is invoked from the sprout init.d script, and
+# outputs a simple string list of parameters to pass to sprout on startup.
+#
+# All parameters are of the form:
+#   --plugin-option <sproutlet name>,<arg name>,<value>
+#
+
+# Read in deployment configuration.
+. /etc/clearwater/config
+
+MANGELWURZEL_AS_ARGS=""
+
+# Add parameters if they are configured in the deployment config.
+[ "$mangelwurzel" = "" ] \
+  || MANGELWURZEL_AS_ARGS="$MANGELWURZEL_AS_ARGS --plugin-option mangelwurzel,mangelwurzel,$mangelwurzel"
+
+[ "$mangelwurzel_prefix" = "" ] \
+  || MANGELWURZEL_AS_ARGS="$MANGELWURZEL_AS_ARGS --plugin-option mangelwurzel,mangelwurzel_prefix,$mangelwurzel_prefix"
+
+[ "$mangelwurzel_uri" = "" ] \
+  || MANGELWURZEL_AS_ARGS="$MANGELWURZEL_AS_ARGS --plugin-option mangelwurzel,mangelwurzel_uri,$mangelwurzel_uri"
+
+# Finally, echo the collected arguments to stdout.  The sprout startup script
+# that invoked this script will append these arguments to those passed to
+# the sprout process.
+echo $MANGELWURZEL_AS_ARGS
